@@ -1,0 +1,40 @@
+{
+  "name": "gulp-html-script",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yodairish/gulp-html-script.git"
+  },
+  "keywords": [
+    "gulpplugin",
+    "html",
+    "js"
+  ],
+  "dependencies": {
+    "gulp-util": "^3.0.1",
+    "through2": "^0.6.3"
+  },
+  "devDependencies": {
+    "mocha": "^2.0.1"
+  },
+  "author": {
+    "name": "Yodairish",
+    "email": "yodairish@gmail.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "index.js"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yodairish/gulp-html-script/issues"
+  },
+  "homepage": "https://github.com/yodairish/gulp-html-script"
+}
