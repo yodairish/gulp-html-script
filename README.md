@@ -1,10 +1,10 @@
-# gulp-reacss
+# gulp-html-script
 
 Allocates scripts from html into separate files
 
 ## Usage
 
-```
+```html
 <!-- about.html -->
 <body>
 <div>text text</div>
@@ -16,7 +16,7 @@ Allocates scripts from html into separate files
 </body>
 ```
 
-```
+```js
 // gulpfile.js
 var gulp = require('gulp');
 var htmlScript = require('gulp-html-script');
@@ -33,7 +33,7 @@ gulp.task('html', function () {
 
 **Output:**
 
-```
+```html
 <!-- about.html -->
 <body>
 <div>text text</div>
@@ -42,7 +42,7 @@ gulp.task('html', function () {
 </body>
 ```
 
-```
+```js
 // about.js
 (function() {
   var one = 222;
