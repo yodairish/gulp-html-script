@@ -4,7 +4,8 @@ var through = require('through2'),
 
 const PLUGIN_NAME = 'gulp-html-script',
       REG = {
-        SCRIPT: /<script[^>]*>[^<]*[a-zA-Z]+[^<]*<\/script>/g,
+        SCRIPT: /<script[^>]*>[^<]+[\s\S]+<\/script>/g,
+        INLINE: /(onclick|onsubmit|onmousedown|onkeydown|onload)=/g,
         EXT: /\..*$/,
         FILE: /([^\/\\]*)$/,
         SCRIPT_START: /^<script[^>]*>[\n ]*/,
@@ -14,7 +15,10 @@ const PLUGIN_NAME = 'gulp-html-script',
 module.exports = function(options){
   options = options || {};
 
-  options.folder = options.folder ? options.folder : 'js';
+  options.write = !(options.write === false);
+  options.noScope = options.noScope || false;
+  options.folder = options.folder || 'js';
+  options.inline = options.inline || false;
   options.logPath = options.logPath ?
                     options.logPath.replace(REG.FILE, '') :
                     '';
@@ -40,7 +44,13 @@ module.exports = function(options){
     }
 
     var contents = file.contents.toString(),
-        match = contents.match(REG.SCRIPT);
+        match = contents.match(REG.SCRIPT),
+        isInline = false;
+
+    if (options.inline && !match) {
+      match = contents.match(REG.INLINE);
+      isInline = true;
+    }
 
     if (match) {
       var logFile = options.logPath + 'htmlScript.log',
@@ -50,7 +60,7 @@ module.exports = function(options){
         logContent = fs.readFileSync(logFile) + '====================\n';
       }
 
-      if (options.write) {
+      if (options.write && !isInline) {
         var num = 1;
 
         match.forEach(function(jsContent){
@@ -94,8 +104,13 @@ module.exports = function(options){
         file.contents = new Buffer(contents);
 
       } else {
-        logContent += logTime + ' ' + file.path + '\n';
+        logContent += logTime + ' ' + file.path + (isInline ? ' : inline' : '') + '\n';
         process.stdout.write(file.path + '\n');
+      }
+
+      if (file.path.indexOf('example-multi-column-sort') !== -1) {
+        logContent += isInline + '\n';
+        logContent += JSON.stringify(match) + '\n';
       }
 
       this.push(
